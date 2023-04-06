@@ -1,12 +1,6 @@
-# REST-API-phonebook
+# Slim-mom-backend
 
-This REST API can be used to manage the phone book.
-
-## Created with
-
-:white_check_mark: Node.js  
-:white_check_mark: Mongo DB  
-:white_check_mark: Express
+Base URL: https://slim-mom-backend-tf5k.onrender.com
 
 ## Usage
 
@@ -17,644 +11,184 @@ This REST API uses these endpoints:
 - **GET** `/api/auth/logout` - log out from the application
 
 - **GET** `/api/users/current` - get information about the current user
-- **PATCH** `/api/users` - update user's subscription
-- **PATCH** `/api/users/avatars` - update user's avatar
-- **GET** `/api/users/verify/:verificationToken` - confirm email
-- **POST** `/api/users/verify` - reconfirm email
+<!-- - **GET** `/api/users/verify/:verificationToken` - confirm email
+- **POST** `/api/users/verify` - reconfirm email -->
 
-- **GET** `/api/contacts` - get all user's contacts
-- **GET** `/api/contacts?favorite=true` - filter contacts by favorites
-- **GET** `/api/contacts?page=1&limit=20` - pagination
-- **GET** `/api/contacts/:contactId` - get user's contact by id
-- **POST** `/api/contacts` - create a new contact
-- **DELETE** `/api/contacts:contactId` - delete contact
-- **PUT** `/api/contacts:contactId` - update an existing contact
-- **PATCH** `/api/contacts:contactId/favorite` - update contact status
+- **GET** `/api/products` - get all user's products per day
+- **GET** `/api/products/database?product=productName` - get all product categories from DB
+- **DELETE** `/api/products:productId` - delete product
+- **POST** `/api/products` - add a new product
+- **POST** `/api/products/publicCalorie` - get a calorie count and non-recommended foods for unregistered user
+- **POST** `/api/products/privateCalorie` - get a calorie count and non-recommended foods for REGISTERED user
 
-### Create a new user
+### **POST** `/api/auth/register`
 
-**Request:**  
-Content-Type: application/json  
-Request body:
+**Request body:**
 
 ```
 {
-    "email": "example@example.com",
-    "password": "example password"
+    "name": "name",
+    "email": "test@test.com",
+    "password": "password"
 }
 ```
 
-**Response:**  
-Status: 201 Created  
-Response body:
+**Response body:**
 
 ```
 {
     "user": {
-        "email": "example@example.com",
-        "subscription": "subscription type",
+        "name": "name",
+        "email": "test@test.com"
     }
 }
 ```
 
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "error message"
-}`
+### **POST** `/api/auth/login`
 
-Status: 409 Conflict  
-Response body:
-`{
-    "message": "Email in use"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Log in in the application
-
-**Request:**  
-Content-Type: application/json  
-Request body:
+**Request body:**
 
 ```
 {
-    "email": "example@example.com",
-    "password": "example password"
+    "email": "test@test.com",
+    "password": "password"
 }
 ```
 
-**Response:**  
-Status: 200 OK  
-Response body:
+**Response body:**
 
 ```
 {
-    "token": "example token",
+    "token": "token",
     "user": {
-            "email": "example@example.com",
-            "subscription": "subscription type",
+        "name": "name",
+        "email": "test@test.com"
     }
 }
 ```
 
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "error message"
-}`
+### **GET** `/api/auth/logout`
 
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Email or password is wrong"
-}`
+**Authorization**
 
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
+### **GET** `/api/users/current`
 
-### Log out from the application
+**Authorization**
 
-**Request:**  
-Headers - Authorization: "Bearer {Token}"
-
-**Response:**  
-Status: 204 No Content
-
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Get information about the current user
-
-**Request:**  
-Headers - Authorization: "Bearer {Token}"
-
-**Response:**  
-Status: 200 OK  
-Response body:
+**Response body:**
 
 ```
 {
-    "email": "example@example.com",
-    "subscription": "subscription type",
+    "_id": "642da20a63fc51b93c0fe945",
+    "name": "ben",
+    "email": "test2@test.com",
+    "height": null,
+    "age": null,
+    "currentWeight": null,
+    "desiredWeight": null,
+    "bloodType": 1,
+    "dailyRate": null,
+    "notRecFood": [],
+    "createdAt": "2023-04-05T16:30:02.590Z"
 }
 ```
 
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
+### **GET** `/api/products`
 
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
+**Authorization**
 
-### Update user's subscription
-
-**Request:**  
-Content-Type: application/json  
-Headers - Authorization: "Bearer {Token}"  
-Request body:
-
-```
-{
-    "subscription": "subscription type"
-}
-```
-
-**Response:**  
-Status: 200 OK  
-Response body:
-
-```
-{
-    message: "Your subscription has been changed to 'subscription type'"
-}
-```
-
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "error message"
-}`
-
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Update user's avatar
-
-**Request:**  
-Content-Type: multipart/form-data  
-Headers - Authorization: "Bearer {Token}"  
-Request body: downloaded file
-
-**Response:**  
-Status: 200 OK  
-Response body:
-
-```
-{
-    "avatarURL": "link to file"
-}
-```
-
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "File is not selected"
-}`
-
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Confirm email
-
-**Request:**  
-Path params - contactId
-
-**Response:**  
-Status: 200 OK  
-Response body:
-`{
-    "message": "Verification successful"
-}`
-
-Status: 404 Not found  
-Response body:
-`{
-    "message": "User not found"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Reconfirm email
-
-**Request:**  
-Content-Type: application/json  
-Request body:
-
-```
-{
-    "email": "example@example.com"
-}
-```
-
-**Response:**  
-Status: 200 OK  
-Response body:
-`{
-    "message": "Verification email sent"
-}`
-
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "error message"
-}`
-
-Status: 404 Not found  
-Response body:
-`{
-    "message": "User not found"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Get all user's contacts
-
-**Request:**  
-Headers - Authorization: "Bearer {Token}"
-
-**Response:**  
-Status: 200 OK  
-Response body:
+**Response body:**
 
 ```
 [
     {
-        "_id": "example contact id"
-        "name": "example name",
-        "email": "example@example.com",
-        "phone": "example number",
-        "favorite": "contact status",
+        "_id": "642da33feb2cdbbd81b1a5b8",
+        "productName": "egg",
+        "weight": 100,
+        "date": "2023-02-02T22:00:00.000Z",
         "owner": {
-            "_id": "example owner id",
-            "email": "example@example.com"
+            "_id": "642da20a63fc51b93c0fe945",
+            "name": "ben",
+            "email": "test2@test.com",
+            "dailyRate": null,
+            "notRecFood": []
         }
     }
 ]
 ```
 
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
+### **GET** `api/products/database?product=productName`
 
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
+**Authorization**
 
-### Filter contacts by favorites
-
-**Request:**  
-Headers - Authorization: "Bearer {Token}"
-Query params - favorite=true
-
-**Response:**  
-Status: 200 OK  
-Response body:
+**Response body:**
 
 ```
 [
-    {
-        "_id": "example contact id"
-        "name": "example name",
-        "email": "example@example.com",
-        "phone": "example number",
-        "favorite": "true",
-        "owner": {
-            "_id": "example owner id",
-            "email": "example@example.com"
-        }
-    }
+   {
+  "_id": {"$oid": "5d51694902b2373622ff5f82"  },
+  "categories": ["безалкогольные напитки"],
+  "weight": 100,
+  "title": {
+    "ru": "Яблочный нектар",
+    "ua": "Яблучний нектар"
+     },
+  "calories": 41,
+  "groupBloodNotAllowed": [
+    null,
+    false,
+    false,
+    false,
+    false
+  ],
+  "__v": 0
+}
 ]
 ```
 
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "Invalid query data"
-}`
+### **POST** `/api/products`
 
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
+**Authorization**
+**Request body:**
 
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
+    ```
 
-### Pagination
-
-**Request:**  
-Headers - Authorization: "Bearer {Token}"
-Query params - page=1&limit=20
-
-**Response:**  
-Status: 200 OK  
-Response body:
-
-```
-[
-    {
-        "_id": "example contact id"
-        "name": "example name",
-        "email": "example@example.com",
-        "phone": "example number",
-        "favorite": "contact status",
-        "owner": {
-            "_id": "example owner id",
-            "email": "example@example.com"
-        }
-    }
-]
-```
-
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "Invalid query data"
-}`
-
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Get user's contact by id
-
-**Request:**  
-Headers - Authorization: "Bearer {Token}"  
-Path params - contactId
-
-**Response:**  
-Status: 200 OK  
-Response body:
-
-```
 {
-    "_id": "example contact id"
-    "name": "example name",
-    "email": "example@example.com",
-    "phone": "example number",
-    "favorite": "contact status",
-    "owner": "example owner id",
-    "createdAt": "date of creation",
-    "updatedAt": "update date"
+"productName": "Яйце куряче (жовток сухий)",
+"weight": "100",
+"date": "2023/05/03 20:53"
+
 }
-```
-
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Create a new contact
-
-**Request:**  
-Content-Type: application/json  
-Headers - Authorization: "Bearer {Token}"  
-Request body:
 
 ```
+
+**Response body:**
+
+```
+
 {
-    "name": "example name",
-    "email": "example@example.com",
-    "phone": "example number"
+"productName": "Яйце куряче (жовток сухий)",
+"weight": 100,
+"date": "2023-05-03T17:53:00.000Z",
+"owner": "642da20a63fc51b93c0fe945",
+"\_id": "642dd2598c71f0c2d6408c1e"
 }
-```
-
-**Response:**  
-Status: 201 Created  
-Response body:
 
 ```
+
+
+### **DELETE** `/api/products:productId`
+**Request params**
+**Authorization**
+
+**Response body:**
+
+```
+
 {
-    "_id": "example contact id"
-    "name": "example name",
-    "email": "example@example.com",
-    "phone": "example number",
-    "favorite": "contact status",
-    "owner": "example owner id",
-    "createdAt": "date of creation",
-    "updatedAt": "update date"
+"message": "Product deleted"
 }
-```
-
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "Missing required name field"
-}`
-
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Delete contact
-
-**Request:**  
-Headers - Authorization: "Bearer {Token}"  
-Path params - contactId
-
-**Response:**  
-Status: 200 OK  
-Response body:
-`{
-    "message": "Contact deleted"
-}`
-
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
-
-Status: 404 Not found  
-Response body:
-`{
-    "message": "Not found"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Update an existing contact
-
-**Request:**  
-Content-Type: application/json  
-Headers - Authorization: "Bearer {Token}"  
-Path params - contactId  
-Request body:
 
 ```
-{
-    "name": "example name",
-    "email": "example@example.com",
-    "phone": "example number"
-}
-```
-
-**Response:**  
-Status: 200 OK  
-Response body:
 
 ```
-{
-    "_id": "example contact id"
-    "name": "example name",
-    "email": "example@example.com",
-    "phone": "example number",
-    "favorite": "contact status",
-    "owner": "example owner id",
-    "createdAt": "date of creation",
-    "updatedAt": "update date"
-}
-```
-
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "Missing required name field"
-}`
-
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
-
-Status: 404 Not found  
-Response body:
-`{
-    "message": "Not found"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-
-### Update contact status
-
-**Request:**  
-Content-Type: application/json  
-Headers - Authorization: "Bearer {Token}"  
-Path params - contactId  
-Request body:
-
-```
-{
-    "favorite": "contact status"
-}
-```
-
-**Response:**  
-Status: 200 OK  
-Response body:
-
-```
-{
-    "_id": "example contact id"
-    "name": "example name",
-    "email": "example@example.com",
-    "phone": "example number",
-    "favorite": "contact status",
-    "owner": "example owner id",
-    "createdAt": "date of creation",
-    "updatedAt": "update date"
-}
-```
-
-Status: 400 Bad Request  
-Response body:
-`{
-    "message": "Missing field favorite"
-}`
-
-Status: 401 Unauthorized  
-Response body:
-`{
-    "message": "Not authorized"
-}`
-
-Status: 404 Not found  
-Response body:
-`{
-    "message": "Not found"
-}`
-
-Status: 500 Internal Server Error  
-Response body:
-`{
-    "message": "Server error"
-}`
-# slim-mom-backend
