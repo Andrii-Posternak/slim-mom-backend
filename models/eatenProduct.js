@@ -12,10 +12,10 @@ const eatenProductSchema = new Schema(
     },
     calories: {
       type: Number,
+      required: [true, "calories is required"],
     },
     date: {
       type: Date,
-      required: [true, "date is required"],
     },
     owner: {
       type: Schema.Types.ObjectId,

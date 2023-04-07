@@ -1,4 +1,5 @@
 const EatenProduct = require("../models/eatenProduct");
+const Product = require("../models/product");
 const { RequestError } = require("../helpers");
 const { eatenProductSchema } = require("../schemas/products");
 
@@ -8,10 +9,17 @@ const getProductFromDB = async (req, res, next) => {
     if (!product) {
       throw RequestError(400, "Invalid query data");
     }
-
-    // логіка пошуку в БД в колекції Product (п.7 ТЗ)
-
-    res.json();
+    const result = await Product.find({
+      $or: [
+        { "title.ru": { $regex: product, $options: "i" } },
+        { "title.ua": { $regex: product, $options: "i" } },
+        { "title.en": { $regex: product, $options: "i" } },
+      ],
+    });
+    if (result.length === 0) {
+      throw RequestError(404, "Not found");
+    }
+    res.json(result);
   } catch (error) {
     next(error);
   }
@@ -41,13 +49,18 @@ const getDailyCalPrivate = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
   try {
+    const { date } = req.query;
+    if (!date) {
+      throw RequestError(400, "Invalid query data");
+    }
     const { id: owner } = req.user;
     const products = await EatenProduct.find({ owner }).populate(
       "owner",
       "name email dailyRate notRecFood"
     );
-    const result = products.sort((a, b) => b.date - a.date);
-
+    const result = products
+      .filter((prod) => prod.date === date)
+      .sort((a, b) => b.date - a.date);
     res.json(result);
   } catch (error) {
     next(error);
@@ -61,7 +74,11 @@ const addProduct = async (req, res, next) => {
       throw RequestError(400, "Missing required name field");
     }
     const { id: owner } = req.user;
-    const result = await EatenProduct.create({ ...req.body, owner });
+    const result = await EatenProduct.create({
+      ...req.body,
+      owner,
+      date: new Date(),
+    });
     res.status(201).json(result);
   } catch (error) {
     next(error);

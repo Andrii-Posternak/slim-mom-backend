@@ -93,9 +93,10 @@ This REST API uses these endpoints:
 }
 ```
 
-### **GET** `/api/products`
+### **GET** `/api/products?date=selectedDate`
 
 **Authorization**
+**Query params**
 
 **Response body:**
 
@@ -120,29 +121,35 @@ This REST API uses these endpoints:
 ### **GET** `api/products/database?product=productName`
 
 **Authorization**
+**Query params**
 
 **Response body:**
 
 ```
 [
    {
-  "_id": {"$oid": "5d51694902b2373622ff5f82"  },
-  "categories": ["безалкогольные напитки"],
-  "weight": 100,
-  "title": {
-    "ru": "Яблочный нектар",
-    "ua": "Яблучний нектар"
-     },
-  "calories": 41,
-  "groupBloodNotAllowed": [
-    null,
-    false,
-    false,
-    false,
-    false
-  ],
-  "__v": 0
-}
+        "_id": "5d51694802b2373622ff5565",
+        "categories": {
+            "ru": "зерновые",
+            "uk": "зернові",
+            "en": "cereals"
+        },
+        "weight": 100,
+        "title": {
+            "ru": "Гречневые хлопья Myllyn Paras для каши",
+            "ua": "Гречані пластівці Myllyn Paras для каші",
+            "en": "Buckwheat flakes Myllyn Paras for porridge"
+        },
+        "calories": 340,
+        "groupBloodNotAllowed": [
+            null,
+            true,
+            false,
+            true,
+            true
+        ],
+        "__v": 0
+    }
 ]
 ```
 
@@ -156,8 +163,7 @@ This REST API uses these endpoints:
 {
 "productName": "Яйце куряче (жовток сухий)",
 "weight": "100",
-"date": "2023/05/03 20:53"
-
+"calories": "354"
 }
 
 ```
@@ -169,7 +175,8 @@ This REST API uses these endpoints:
 {
 "productName": "Яйце куряче (жовток сухий)",
 "weight": 100,
-"date": "2023-05-03T17:53:00.000Z",
+"calories": 354,
+"date": "2023-04-07T14:12:01.020Z",
 "owner": "642da20a63fc51b93c0fe945",
 "\_id": "642dd2598c71f0c2d6408c1e"
 }

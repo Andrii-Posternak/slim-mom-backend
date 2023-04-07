@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const productSchema = new Schema({
   categories: {
-    type: Array,
+    type: Object,
     required: [true, "categories is required"],
   },
   weight: {
