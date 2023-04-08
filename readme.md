@@ -96,7 +96,7 @@ This REST API uses these endpoints:
 ### **GET** `/api/products/:date`
 
 **Authorization**
-**Query params** toDateString()
+**Query params** toDateString() => (Sat Apr 08 2023)
 
 **Response body:**
 

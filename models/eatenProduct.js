@@ -20,15 +20,6 @@ const eatenProductSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
-    left: {
-      type: Number,
-    },
-    consumed: {
-      type: Number,
-    },
-    nOfNormal: {
-      type: Number,
-    },
   },
   { versionKey: false }
 );
