@@ -14,9 +14,9 @@ This REST API uses these endpoints:
 <!-- - **GET** `/api/users/verify/:verificationToken` - confirm email
 - **POST** `/api/users/verify` - reconfirm email -->
 
-- **GET** `/api/products` - get all user's products per day
+- **GET** `/api/products/:date` - get all user's products per day
 - **GET** `/api/products/database?product=productName` - get all product categories from DB
-- **DELETE** `/api/products:productId` - delete product
+- **DELETE** `/api/products/:productId` - delete product
 - **POST** `/api/products` - add a new product
 - **POST** `/api/products/publicCalorie` - get a calorie count and non-recommended foods for unregistered user
 - **POST** `/api/products/privateCalorie` - get a calorie count and non-recommended foods for REGISTERED user
@@ -93,10 +93,10 @@ This REST API uses these endpoints:
 }
 ```
 
-### **GET** `/api/products?date=selectedDate`
+### **GET** `/api/products/:date`
 
 **Authorization**
-**Query params**
+**Query params** toDateString()
 
 **Response body:**
 
@@ -106,6 +106,7 @@ This REST API uses these endpoints:
         "_id": "642da33feb2cdbbd81b1a5b8",
         "productName": "egg",
         "weight": 100,
+        "calories": 422,
         "date": "2023-02-02T22:00:00.000Z",
         "owner": {
             "_id": "642da20a63fc51b93c0fe945",
@@ -184,7 +185,7 @@ This REST API uses these endpoints:
 ```
 
 
-### **DELETE** `/api/products:productId`
+### **DELETE** `/api/products/:productId`
 **Request params**
 **Authorization**
 

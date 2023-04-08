@@ -5,15 +5,15 @@ const { eatenProductSchema } = require("../schemas/products");
 
 const getProductFromDB = async (req, res, next) => {
   try {
-    const { product } = req.query;
-    if (!product) {
+    const { productName } = req.query;
+    if (!productName) {
       throw RequestError(400, "Invalid query data");
     }
     const result = await Product.find({
       $or: [
-        { "title.ru": { $regex: product, $options: "i" } },
-        { "title.ua": { $regex: product, $options: "i" } },
-        { "title.en": { $regex: product, $options: "i" } },
+        { "title.ru": { $regex: productName, $options: "i" } },
+        { "title.ua": { $regex: productName, $options: "i" } },
+        { "title.en": { $regex: productName, $options: "i" } },
       ],
     });
     if (result.length === 0) {
@@ -49,7 +49,7 @@ const getDailyCalPrivate = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
   try {
-    const { date } = req.query;
+    const { date } = req.params;
     if (!date) {
       throw RequestError(400, "Invalid query data");
     }
@@ -59,7 +59,7 @@ const getProducts = async (req, res, next) => {
       "name email dailyRate notRecFood"
     );
     const result = products
-      .filter((prod) => prod.date === date)
+      .filter((prod) => prod.date.toDateString() === date)
       .sort((a, b) => b.date - a.date);
     res.json(result);
   } catch (error) {

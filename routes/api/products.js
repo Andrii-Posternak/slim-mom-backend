@@ -4,7 +4,7 @@ const { auth } = require("../../middlewares");
 
 const router = express.Router();
 
-router.get("/", auth, productsController.getProducts);
+router.get("/:date", auth, productsController.getProducts);
 
 router.post("/", auth, productsController.addProduct);
 
