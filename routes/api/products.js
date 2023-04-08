@@ -10,7 +10,7 @@ router.post("/", auth, productsController.addProduct);
 
 router.delete("/:productId", auth, productsController.removeProduct);
 
-router.get("/database", auth, productsController.getProductFromDB);
+router.get("/", auth, productsController.getProductFromDB);
 
 router.post("/publicCalorie", productsController.getDailyCalPublic);
 

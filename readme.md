@@ -15,7 +15,7 @@ This REST API uses these endpoints:
 - **POST** `/api/users/verify` - reconfirm email -->
 
 - **GET** `/api/products/:date` - get all user's products per day
-- **GET** `/api/products/database?product=productName` - get all product categories from DB
+- **GET** `/api/products/?productName=productName` - get all product categories from DB
 - **DELETE** `/api/products/:productId` - delete product
 - **POST** `/api/products` - add a new product
 - **POST** `/api/products/publicCalorie` - get a calorie count and non-recommended foods for unregistered user
@@ -119,7 +119,7 @@ This REST API uses these endpoints:
 ]
 ```
 
-### **GET** `api/products/database?product=productName`
+### **GET** `api/products/?productName=productName`
 
 **Authorization**
 **Query params**
