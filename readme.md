@@ -159,20 +159,16 @@ This REST API uses these endpoints:
 **Authorization**
 **Request body:**
 
-    ```
-
+```
 {
 "productName": "Яйце куряче (жовток сухий)",
 "weight": "100",
-"calories": "354"
 }
-
 ```
 
 **Response body:**
 
 ```
-
 {
 "productName": "Яйце куряче (жовток сухий)",
 "weight": 100,
@@ -181,22 +177,17 @@ This REST API uses these endpoints:
 "owner": "642da20a63fc51b93c0fe945",
 "\_id": "642dd2598c71f0c2d6408c1e"
 }
-
 ```
 
-
 ### **DELETE** `/api/products/:productId`
+
 **Request params**
 **Authorization**
 
 **Response body:**
 
 ```
-
 {
 "message": "Product deleted"
 }
-
-```
-
 ```

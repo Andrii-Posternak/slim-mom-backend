@@ -73,9 +73,19 @@ const addProduct = async (req, res, next) => {
     if (error) {
       throw RequestError(400, "Missing required name field");
     }
+    const { productName, weight } = req.body;
+    const [{ calories }] = await Product.find({
+      $or: [
+        { "title.ru": productName },
+        { "title.ua": productName },
+        { "title.en": productName },
+      ],
+    }).select("calories");
+    const countedCalories = (calories / 100) * weight;
     const { id: owner } = req.user;
     const result = await EatenProduct.create({
       ...req.body,
+      calories: countedCalories,
       owner,
       date: new Date(),
     });

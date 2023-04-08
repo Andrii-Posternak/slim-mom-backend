@@ -12,7 +12,6 @@ const eatenProductSchema = new Schema(
     },
     calories: {
       type: Number,
-      required: [true, "calories is required"],
     },
     date: {
       type: Date,
