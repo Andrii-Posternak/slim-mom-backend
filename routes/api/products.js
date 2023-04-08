@@ -12,8 +12,8 @@ router.delete("/:productId", auth, productsController.removeProduct);
 
 router.get("/", auth, productsController.getProductFromDB);
 
-router.post("/publicCalorie", productsController.getDailyCalPublic);
+router.post("/public", productsController.getDailyCalPublic);
 
-router.post("/privateCalorie", auth, productsController.getDailyCalPrivate);
+router.post("/calorie", auth, productsController.getDailyCalPrivate);
 
 module.exports = router;

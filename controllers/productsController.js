@@ -1,7 +1,9 @@
 const EatenProduct = require("../models/eatenProduct");
 const Product = require("../models/product");
-const { RequestError } = require("../helpers");
+const User = require("../models/user");
+const { RequestError, calcDailyCalorieNorm } = require("../helpers");
 const { eatenProductSchema } = require("../schemas/products");
+const { userDataSchema } = require("../schemas/users");
 
 const getProductFromDB = async (req, res, next) => {
   try {
@@ -11,11 +13,10 @@ const getProductFromDB = async (req, res, next) => {
     }
     const result = await Product.find({
       $or: [
-        { "title.ru": { $regex: productName, $options: "i" } },
         { "title.ua": { $regex: productName, $options: "i" } },
         { "title.en": { $regex: productName, $options: "i" } },
       ],
-    });
+    }).select("-categories.ru -title.ru");
     if (result.length === 0) {
       throw RequestError(404, "Not found");
     }
@@ -27,10 +28,20 @@ const getProductFromDB = async (req, res, next) => {
 
 const getDailyCalPublic = async (req, res, next) => {
   try {
-    // логіка підрахунку калорій та отримання
-    // списку нерекомендованих продуктів (п.5 ТЗ)
-
-    res.json();
+    const { error } = userDataSchema.validate(req.body);
+    if (error) {
+      throw RequestError(400, error.message);
+    }
+    const userInfo = req.body;
+    const dailyCalorieNorm = calcDailyCalorieNorm(userInfo);
+    const products = await Product.find({
+      [`groupBloodNotAllowed.${userInfo.bloodType}`]: true,
+    });
+    const prohibitedPoducts = products.map(({ title }) => ({
+      ua: title.ua,
+      en: title.en,
+    }));
+    res.json({ dailyRate: dailyCalorieNorm, notRecFood: prohibitedPoducts });
   } catch (error) {
     next(error);
   }
@@ -38,10 +49,30 @@ const getDailyCalPublic = async (req, res, next) => {
 
 const getDailyCalPrivate = async (req, res, next) => {
   try {
-    // логіка підрахунку калорій та отримання
-    // списку нерекомендованих продуктів (п.6 ТЗ)
-
-    res.json();
+    const { error } = userDataSchema.validate(req.body);
+    if (error) {
+      throw RequestError(400, error.message);
+    }
+    const userInfo = req.body;
+    const dailyCalorieNorm = calcDailyCalorieNorm(userInfo);
+    const products = await Product.find({
+      [`groupBloodNotAllowed.${userInfo.bloodType}`]: true,
+    });
+    const prohibitedPoducts = products.map(({ title }) => ({
+      ua: title.ua,
+      en: title.en,
+    }));
+    const { id } = req.user;
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        ...userInfo,
+        dailyRate: dailyCalorieNorm,
+        notRecFood: prohibitedPoducts,
+      },
+      { new: true }
+    ).select("-name -email -password -createdAt -updatedAt -token");
+    res.json(updatedUser);
   } catch (error) {
     next(error);
   }

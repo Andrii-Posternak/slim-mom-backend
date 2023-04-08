@@ -18,8 +18,8 @@ This REST API uses these endpoints:
 - **GET** `/api/products/?productName=productName` - get all product categories from DB
 - **DELETE** `/api/products/:productId` - delete product
 - **POST** `/api/products` - add a new product
-- **POST** `/api/products/publicCalorie` - get a calorie count and non-recommended foods for unregistered user
-- **POST** `/api/products/privateCalorie` - get a calorie count and non-recommended foods for REGISTERED user
+- **POST** `/api/products/public` - get a calorie count and non-recommended foods for unregistered user
+- **POST** `/api/products/calorie` - get a calorie count and non-recommended foods for REGISTERED user
 
 ### **POST** `/api/auth/register`
 
@@ -131,13 +131,11 @@ This REST API uses these endpoints:
    {
         "_id": "5d51694802b2373622ff5565",
         "categories": {
-            "ru": "зерновые",
             "uk": "зернові",
             "en": "cereals"
         },
         "weight": 100,
         "title": {
-            "ru": "Гречневые хлопья Myllyn Paras для каши",
             "ua": "Гречані пластівці Myllyn Paras для каші",
             "en": "Buckwheat flakes Myllyn Paras for porridge"
         },
@@ -189,5 +187,69 @@ This REST API uses these endpoints:
 ```
 {
 "message": "Product deleted"
+}
+```
+
+### **POST** `/api/products/public`
+
+**Request body:**
+
+```
+{
+    "height": "190",
+    "age": "50",
+    "currentWeight": "190",
+    "desiredWeight": "120",
+    "bloodType": "4"
+}
+```
+
+**Response body:**
+
+```
+{
+    "dailyRate": 1977,
+    "notRecFood":
+        [
+            {
+                "ua": "Гречані пластівці Myllyn Paras для каші",
+                "en": "Buckwheat flakes Myllyn Paras for porridge"
+            }
+        ]
+}
+```
+
+### **POST** `/api/products/calorie`
+
+**Request body:**
+
+```
+{
+    "height": "190",
+    "age": "50",
+    "currentWeight": "190",
+    "desiredWeight": "120",
+    "bloodType": "4"
+}
+```
+
+**Response body:**
+
+```
+{
+     "_id": "642da20a63fc51b93c0fe945",
+    "height": 190,
+    "age": 30,
+    "currentWeight": 130,
+    "desiredWeight": 120,
+    "bloodType": 2,
+    "dailyRate": 2077,
+    "notRecFood":
+        [
+            {
+                "ua": "Гречані пластівці Myllyn Paras для каші",
+                "en": "Buckwheat flakes Myllyn Paras for porridge"
+            }
+        ]
 }
 ```
