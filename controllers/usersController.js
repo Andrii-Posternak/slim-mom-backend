@@ -27,9 +27,15 @@ const getCurrentUser = async (req, res, next) => {
 // const verification = async (req, res, next) => {
 //   try {
 //     const { verificationToken } = req.params;
+// if (!verificationToken) {
+//   throw RequestError(400, "Invalid query data");
+// }
 //     const existingUser = await User.findOne({ verificationToken });
 //     if (!existingUser) {
-//       throw RequestError(404, "User not found");
+//       throw RequestError(404, "Not found");
+//     }
+//     if (existingUser.verify) {
+//       throw RequestError(400, "Verification has already been passed");
 //     }
 //     await User.findByIdAndUpdate(existingUser._id, {
 //       verificationToken: null,
@@ -51,7 +57,7 @@ const getCurrentUser = async (req, res, next) => {
 //     }
 //     const existingUser = await User.findOne({ email });
 //     if (!existingUser) {
-//       throw RequestError(404, "User not found");
+//       throw RequestError(404, "Not found");
 //     }
 //     if (existingUser.verify) {
 //       throw RequestError(400, "Verification has already been passed");

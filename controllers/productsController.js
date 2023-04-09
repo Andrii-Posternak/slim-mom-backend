@@ -16,7 +16,7 @@ const getProductFromDB = async (req, res, next) => {
         { "title.ua": { $regex: productName, $options: "i" } },
         { "title.en": { $regex: productName, $options: "i" } },
       ],
-    }).select("-categories.ru -title.ru");
+    }).select("-categories.ru -title.ru -__v");
     if (result.length === 0) {
       throw RequestError(404, "Not found");
     }
@@ -85,10 +85,10 @@ const getProducts = async (req, res, next) => {
       throw RequestError(400, "Invalid query data");
     }
     const { id: owner } = req.user;
-    const products = await EatenProduct.find({ owner }).populate(
-      "owner",
-      "name email dailyRate notRecFood"
-    );
+    const products = await EatenProduct.find({ owner });
+    if (products.length === 0) {
+      throw RequestError(404, "Not found");
+    }
     const result = products
       .filter((prod) => prod.date.toDateString() === date)
       .sort((a, b) => b.date - a.date);
@@ -102,18 +102,14 @@ const addProduct = async (req, res, next) => {
   try {
     const { error } = eatenProductSchema.validate(req.body);
     if (error) {
-      throw RequestError(400, "Missing required name field");
+      throw RequestError(400, error.message);
     }
     const { productName, weight } = req.body;
     const product = await Product.find({
-      $or: [
-        { "title.ru": productName },
-        { "title.ua": productName },
-        { "title.en": productName },
-      ],
+      $or: [{ "title.ua": productName }, { "title.en": productName }],
     });
     if (product.length === 0) {
-      throw RequestError(404, "Not found");
+      throw RequestError(500, "There is no such product in the database");
     }
     const [{ calories }] = product;
     const countedCalories = (calories / 100) * weight;
@@ -133,6 +129,9 @@ const addProduct = async (req, res, next) => {
 const removeProduct = async (req, res, next) => {
   try {
     const { productId } = req.params;
+    if (!productId) {
+      throw RequestError(400, "Invalid query data");
+    }
     const { id: owner } = req.user;
     const result = await EatenProduct.findOneAndRemove({
       $and: [{ _id: productId }, { owner }],

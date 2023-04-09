@@ -12,6 +12,7 @@ require("dotenv").config();
 const {
   // SENDGRID_HOST,
   TOKEN_KEY,
+  TOKEN_LIFE_TIME,
 } = process.env;
 
 const register = async (req, res, next) => {
@@ -74,7 +75,7 @@ const login = async (req, res, next) => {
       throw RequestError(401, "Email or password is wrong");
     }
     const payload = { id: existingUser._id };
-    const token = jwt.sign(payload, TOKEN_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(payload, TOKEN_KEY, { expiresIn: TOKEN_LIFE_TIME });
     await User.findByIdAndUpdate(existingUser._id, { token });
     res.json({
       token,
@@ -91,10 +92,6 @@ const login = async (req, res, next) => {
 const logout = async (req, res, next) => {
   try {
     const { _id } = req.user;
-    const existingUser = await User.findById(_id);
-    if (!existingUser) {
-      throw RequestError(401, "Not authorized");
-    }
     await User.findByIdAndUpdate(_id, { token: "" });
     res.status(204).json();
   } catch (error) {
