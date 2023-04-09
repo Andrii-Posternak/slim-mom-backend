@@ -432,7 +432,7 @@
         }
       }
     },
-    "/products/{date}": {
+    "/products/:date": {
       "get": {
         "tags": ["Product"],
         "summary": "Get all the products eaten by the user in a day",
@@ -447,7 +447,7 @@
           {
             "name": "date ",
             "in": "path",
-            "description": "Selected day",
+            "description": "Selected day in the format 'Sat Apr 08 2023'",
             "required": true,
             "type": "string"
           }
