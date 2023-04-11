@@ -24,6 +24,10 @@
     {
       "name": "Product",
       "description": "Products endpoints"
+    },
+    {
+      "name": "Calorie",
+      "description": "Products endpoints"
     }
   ],
   "paths": {
@@ -507,9 +511,9 @@
         }
       }
     },
-    "/products/calorie": {
+    "/calorie": {
       "post": {
-        "tags": ["Product"],
+        "tags": ["Calorie"],
         "summary": "Get a calorie count and non-recommended foods for registered user",
         "parameters": [
           {
@@ -575,9 +579,9 @@
         }
       }
     },
-    "/products/public": {
+    "/public": {
       "post": {
-        "tags": ["Product"],
+        "tags": ["Calorie"],
         "summary": "Get a calorie count and non-recommended foods",
         "requestBody": {
           "required": true,
