@@ -24,8 +24,8 @@ Base URL: `https://slim-mom-backend-tf5k.onrender.com/api`
 - **GET** `/products/?productName=productName` - search product in DB
 - **DELETE** `/products/:productId` - delete eaten product
 - **POST** `/products` - add a new eaten product
-- **POST** `/products/public` - get a calorie count and non-recommended foods for unregistered user
-- **POST** `/products/calorie` - get a calorie count and non-recommended foods for registered user
+- **POST** `/calories` - get a calorie count and non-recommended foods for unregistered user
+- **POST** `/calories/auth` - get a calorie count and non-recommended foods for registered user
 
 To run on localhost use the following commands:
 

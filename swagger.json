@@ -27,7 +27,7 @@
     },
     {
       "name": "Calorie",
-      "description": "Products endpoints"
+      "description": "Calories endpoints"
     }
   ],
   "paths": {
@@ -511,7 +511,7 @@
         }
       }
     },
-    "/calorie": {
+    "/calories/auth": {
       "post": {
         "tags": ["Calorie"],
         "summary": "Get a calorie count and non-recommended foods for registered user",
@@ -579,7 +579,7 @@
         }
       }
     },
-    "/public": {
+    "/calories": {
       "post": {
         "tags": ["Calorie"],
         "summary": "Get a calorie count and non-recommended foods",
