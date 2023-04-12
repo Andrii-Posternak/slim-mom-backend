@@ -82,6 +82,8 @@ const login = async (req, res, next) => {
       user: {
         name: existingUser.name,
         email: existingUser.email,
+        dailyRate: existingUser.dailyRate,
+        notRecFood: existingUser.notRecFood,
       },
     });
   } catch (error) {

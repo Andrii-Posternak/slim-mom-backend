@@ -707,6 +707,29 @@
                 "type": "string",
                 "description": "User's email",
                 "format": "email"
+              },
+              "dailyRate": {
+                "type": "number",
+                "description": "User's daily calorie norm",
+                "example": "1850"
+              },
+              "notRecFood": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ua": {
+                      "type": "string",
+                      "description": "Not recommended food",
+                      "example": "Млинці з грибами"
+                    },
+                    "en": {
+                      "type": "string",
+                      "description": "Not recommended food",
+                      "example": "Pancakes with mushrooms"
+                    }
+                  }
+                }
               }
             }
           }
