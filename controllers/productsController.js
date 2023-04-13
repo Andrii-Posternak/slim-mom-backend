@@ -112,7 +112,7 @@ const addProduct = async (req, res, next) => {
       throw RequestError(500, "There is no such product in the database");
     }
     const [{ calories }] = product;
-    const countedCalories = (calories / 100) * weight;
+    const countedCalories = Math.round((calories / 100) * weight);
     const { id: owner } = req.user;
     const result = await EatenProduct.create({
       ...req.body,
