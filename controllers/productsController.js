@@ -5,16 +5,21 @@ const { RequestError, calcDailyCalorieNorm } = require("../helpers");
 const { eatenProductSchema } = require("../schemas/products");
 const { userDataSchema } = require("../schemas/users");
 
+const escapeRegex = (string) => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+};
+
 const getProductFromDB = async (req, res, next) => {
   try {
     const { productName } = req.query;
+    const regexProductName = escapeRegex(productName);
     if (!productName) {
       throw RequestError(400, "Invalid query data");
     }
     const result = await Product.find({
       $or: [
-        { "title.ua": { $regex: productName, $options: "i" } },
-        { "title.en": { $regex: productName, $options: "i" } },
+        { "title.ua": { $regex: regexProductName, $options: "i" } },
+        { "title.en": { $regex: regexProductName, $options: "i" } },
       ],
     }).select("-categories.ru -title.ru -__v");
     if (result.length === 0) {
