@@ -1,3 +1,4 @@
+const moment = require("moment/moment");
 const EatenProduct = require("../models/eatenProduct");
 const Product = require("../models/product");
 const User = require("../models/user");
@@ -95,7 +96,7 @@ const getProducts = async (req, res, next) => {
       throw RequestError(404, "Not found");
     }
     const result = products
-      .filter((prod) => prod.date.toDateString() === date)
+      .filter((prod) => moment(prod.date).format("DD.MM.YYYY") === date)
       .sort((a, b) => b.date - a.date);
     res.json(result);
   } catch (error) {
