@@ -1,4 +1,4 @@
-const moment = require("moment/moment");
+const moment = require("moment");
 const EatenProduct = require("../models/eatenProduct");
 const Product = require("../models/product");
 const User = require("../models/user");
