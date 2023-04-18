@@ -1,9 +1,5 @@
 const Joi = require("joi");
 
-// const verifySchema = Joi.object({
-//   email: Joi.string().email().required(),
-// });
-
 const userDataSchema = Joi.object({
   height: Joi.number().min(50).max(250).integer().required(),
   age: Joi.number().min(1).max(100).integer().required(),
@@ -13,6 +9,5 @@ const userDataSchema = Joi.object({
 });
 
 module.exports = {
-  // verifySchema,
   userDataSchema,
 };

@@ -1,19 +1,11 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-// const { v4: uuidv4 } = require("uuid");
 const User = require("../models/user");
-const {
-  RequestError,
-  // sendEmail
-} = require("../helpers");
+const { RequestError } = require("../helpers");
 const { registerSchema, loginSchema } = require("../schemas/auth");
 require("dotenv").config();
 
-const {
-  // SENDGRID_HOST,
-  TOKEN_KEY,
-  TOKEN_LIFE_TIME,
-} = process.env;
+const { TOKEN_KEY, TOKEN_LIFE_TIME } = process.env;
 
 const register = async (req, res, next) => {
   try {
@@ -27,20 +19,11 @@ const register = async (req, res, next) => {
       throw RequestError(409, "Email in use");
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    // const verificationToken = uuidv4();
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      // verificationToken,
     });
-
-    // const msg = {
-    //   to: email,
-    //   subject: "Verify your email",
-    //   html: `<p>Follow the <a href="${SENDGRID_HOST}/api/users/verify/${verificationToken}" target="_blank">link</a> to verify your email</p>`,
-    // };
-    // await sendEmail(msg);
 
     res.status(201).json({
       user: {
@@ -64,9 +47,6 @@ const login = async (req, res, next) => {
     if (!existingUser) {
       throw RequestError(401, "Email or password is wrong");
     }
-    // if (!existingUser.verify) {
-    //   throw RequestError(401, "Email is not verified");
-    // }
     const isPasswordValid = await bcrypt.compare(
       password,
       existingUser.password

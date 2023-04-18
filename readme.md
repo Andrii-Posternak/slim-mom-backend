@@ -17,9 +17,6 @@ Base URL: `https://slim-mom-backend-tf5k.onrender.com/api`
 - **GET** `/auth/logout` - log out user
 
 - **GET** `/users/current` - get user info
-<!-- - **GET** `/users/verify/:verificationToken` - confirm email
-- **POST** `/users/verify` - reconfirm email -->
-<!--  -->
 
 - **GET** `/products/:date` - get all user's eaten products per day
 - **GET** `/products/?productName=productName` - search product in DB

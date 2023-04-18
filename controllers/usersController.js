@@ -1,11 +1,6 @@
 const User = require("../models/user");
-const {
-  RequestError,
-  // sendEmail
-} = require("../helpers");
+const { RequestError } = require("../helpers");
 require("dotenv").config();
-
-// const { SENDGRID_HOST } = process.env;
 
 const getCurrentUser = async (req, res, next) => {
   try {
@@ -24,60 +19,6 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
-// const verification = async (req, res, next) => {
-//   try {
-//     const { verificationToken } = req.params;
-// if (!verificationToken) {
-//   throw RequestError(400, "Invalid query data");
-// }
-//     const existingUser = await User.findOne({ verificationToken });
-//     if (!existingUser) {
-//       throw RequestError(404, "Not found");
-//     }
-//     if (existingUser.verify) {
-//       throw RequestError(400, "Verification has already been passed");
-//     }
-//     await User.findByIdAndUpdate(existingUser._id, {
-//       verificationToken: null,
-//       verify: true,
-//     });
-//     res.json({
-//       message: "Verification successful",
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// const reVerification = async (req, res, next) => {
-//   try {
-//     const { email } = req.body;
-//     if (!email) {
-//       throw RequestError(400, "Missing required field email");
-//     }
-//     const existingUser = await User.findOne({ email });
-//     if (!existingUser) {
-//       throw RequestError(404, "Not found");
-//     }
-//     if (existingUser.verify) {
-//       throw RequestError(400, "Verification has already been passed");
-//     }
-//     const msg = {
-//       to: email,
-//       subject: "Verify your email",
-//       html: `<p>This email has been resent because your account was not verified. Follow the <a href="${SENDGRID_HOST}/api/users/verify/${existingUser.verificationToken}" target="_blank">link</a> to verify your email</p>`,
-//     };
-//     await sendEmail(msg);
-//     res.json({
-//       message: "Verification email sent",
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 module.exports = {
   getCurrentUser,
-  // verification,
-  // reVerification,
 };
