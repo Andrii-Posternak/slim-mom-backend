@@ -44,6 +44,7 @@ const login = async (req, res, next) => {
     }
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
+
     if (!existingUser) {
       throw RequestError(403, "Email or password is wrong");
     }
@@ -54,6 +55,7 @@ const login = async (req, res, next) => {
     if (!isPasswordValid) {
       throw RequestError(403, "Email or password is wrong");
     }
+
     const payload = { id: existingUser._id };
     const token = jwt.sign(payload, TOKEN_KEY, { expiresIn: TOKEN_LIFE_TIME });
     await User.findByIdAndUpdate(existingUser._id, { token });
