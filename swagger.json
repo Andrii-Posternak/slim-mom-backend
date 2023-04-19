@@ -126,12 +126,12 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorUnauthorizedLogin"
+                  "$ref": "#/components/schemas/ErrorForbidden"
                 }
               }
             }
@@ -1100,21 +1100,21 @@
           }
         }
       },
-      "ErrorUnauthorizedLogin": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": "Email or password is wrong"
-          }
-        }
-      },
       "ErrorUnauthorized": {
         "type": "object",
         "properties": {
           "message": {
             "type": "string",
             "example": "Not authorized"
+          }
+        }
+      },
+      "ErrorForbidden": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Email or password is wrong"
           }
         }
       },
